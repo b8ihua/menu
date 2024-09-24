@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>居酒屋メニュー</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #373123;
+            color: #fff;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 20%;
+            background-color: #373123;
+            padding: 20px;
+            text-align: center;
+            border-right: 1px solid #333;
+        }
+
+        .logo {
+            width: 80%;
+            margin-bottom: 20px;
+        }
+
+        .menu-section {
+            width: 50%;
+            padding: 20px;
+            background-color: #111;
+        }
+
+        .tab-menu {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .tab-button:hover {
+            background-color: #555;
+        }
+
+        .menu-content {
+display: none; /* 初期状態で非表示 */
+            display: flex;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            color:black;
+        }
+
+        .menu-group {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            margin-right: 10px;
+        }
+
+        .menu-item {
+            text-align: center;
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .menu-item img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .order-section {
+            width: 30%;
+            background-color: #111;
+            padding: 20px;
+            border-left: 1px solid #333;
+        }
+
+        #order-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #order-button {
+            width: 100%;
+            padding: 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        #order-button:hover {
+            background-color: #218838;
+        }
+
+        /* モーダルウィンドウのスタイル */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #222;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            width: 300px;
+        }
+
+
+        .modal-content h3 {
+            margin-bottom: 20px;
+        }
+
+        .modal-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .modal-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 左側：ロゴと挨拶 -->
+        <div class="sidebar">
+            <img src="logo.png" alt="居酒屋ロゴ" class="logo">
+            <h2>いらっしゃいませ！</h2>
+        </div>
+
+        <!-- 中央：タブメニュー -->
+        <div class="menu-section">
+            <!-- タブメニュー -->
+            <div class="tab-menu">
+                <button class="tab-button" onclick="openTab('ippin')">逸品</button>
+                <button class="tab-button" onclick="openTab('shokuji')">お食事</button>
+                <button class="tab-button" onclick="openTab('dessert')">デザート</button>
+                <button class="tab-button" onclick="openTab('drink')">ドリンク</button>
+            </div>
+
+            <!-- メニュー表示 -->
+            <div class="menu-content" id="ippin">
+                <div class="menu-group">
+                    <div class="menu-item">
+                        <img src="item1.jpg" alt="逸品1">
+                        <p>逸品1 - ¥500</p>
+                        <button onclick="openOrderModal('逸品1', 500)">注文</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="item2.jpg" alt="逸品2">
+                        <p>逸品2 - ¥600</p>
+                        <button onclick="openOrderModal('逸品2', 600)">注文</button>
+                    </div>
+                </div>
+                <div class="menu-group">
+                    <div class="menu-item">
+                        <img src="item3.jpg" alt="逸品3">
+                        <p>逸品3 - ¥550</p>
+                        <button onclick="openOrderModal('逸品3', 550)">注文</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="item4.jpg" alt="逸品4">
+                        <p>逸品4 - ¥700</p>
+                        <button onclick="openOrderModal('逸品4', 700)">注文</button>
+                    </div>
+                </div>
+                <div class="menu-group">
+                    <div class="menu-item">
+                        <img src="item5.jpg" alt="逸品5">
+                        <p>逸品5 - ¥650</p>
+                        <button onclick="openOrderModal('逸品5', 650)">注文</button>
+                    </div>
+                </div>
+            </div>
+<div class="menu-content" id="shokuji">
+                <div class="menu-group">
+                    <div class="menu-item">
+                        <img src="item1.jpg" alt="食事1">
+                        <p>食事1 - ¥500</p>
+                        <button onclick="openOrderModal('逸品1', 500)">注文</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="item2.jpg" alt="逸品2">
+                        <p>逸品2 - ¥600</p>
+                        <button onclick="openOrderModal('逸品2', 600)">注文</button>
+                    </div>
+                </div>
+                <div class="menu-group">
+                    <div class="menu-item">
+                        <img src="item3.jpg" alt="逸品3">
+                        <p>逸品3 - ¥550</p>
+                        <button onclick="openOrderModal('逸品3', 550)">注文</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="item4.jpg" alt="逸品4">
+                        <p>逸品4 - ¥700</p>
+                        <button onclick="openOrderModal('逸品4', 700)">注文</button>
+                    </div>
+                </div>
+                <div class="menu-group">
+                    <div class="menu-item">
+                        <img src="item5.jpg" alt="逸品5">
+                        <p>逸品5 - ¥650</p>
+                        <button onclick="openOrderModal('逸品5', 650)">注文</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 他のタブ内容も同様に作成 -->
+        </div>
+
+        <!-- 右側：注文予定リスト -->
+        <div class="order-section">
+            <h3>注文予定リスト</h3>
+            <ul id="order-list"></ul>
+            <button id="order-button">注文する</button>
+        </div>
+    </div>
+
+    <!-- 注文個数を選択するモーダルウィンドウ -->
+    <div id="order-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="modal-item-name"></h3>
+            <p>何個注文しますか？</p>
+            <div id="modal-buttons"></div>
+        </div>
+    </div>
+
+    <script>
+        let selectedItem = null;
+        let selectedPrice = 0;
+
+        function openTab(tabName) {
+    // すべてのタブのメニューを非表示にする
+    const tabs = document.querySelectorAll('.menu-content');
+    tabs.forEach(tab => {
+        tab.style.display = 'none';
+    });
+
+    // 選択されたタブのメニューを表示
+    document.getElementById(tabName).style.display = 'flex';
+}
+
+        function openOrderModal(itemName, price) {
+            selectedItem = itemName;
+            selectedPrice = price;
+            document.getElementById('modal-item-name').textContent = itemName;
+
+            const modalButtons = document.getElementById('modal-buttons');
+            modalButtons.innerHTML = ''; // ボタンをリセット
+
+            // 1〜5のボタンを生成
+            for (let i = 1; i <= 5; i++) {
+                const button = document.createElement('button');
+                button.textContent = i;
+                button.classList.add('modal-button');
+                button.onclick = () => addToOrder(itemName, price, i);
+                modalButtons.appendChild(button);
+            }
+
+            document.getElementById('order-modal').style.display = 'flex';
+        }
+
+        function addToOrder(itemName, price, quantity) {
+            const orderList = document.getElementById('order-list');
+            const listItem = document.createElement('li');
+            listItem.textContent = `${itemName} - ${quantity}個`;
+            orderList.appendChild(listItem);
+
+            // モーダルを閉じる
+            document.getElementById('order-modal').style.display = 'none';
+        }
+
+        // デフォルトで最初のタブを表示
+        document.addEventListener('DOMContentLoaded', () => {
+            openTab('ippin');
+        });
+    </script>
+</body>
+</html>
