@@ -674,7 +674,13 @@ function placeOrder() {
     // 注文リストをクリア
     const orderList = document.getElementById('order-list').querySelector('tbody');
     orderList.innerHTML = '';
-const mailtoLink = `mailto:b8ihua@gmail.com?subject=新しい注文&body=${encodeURIComponent(orderStrings)}`;
+
+    // 注文文字列をクリア
+    orderStrings = '';
+
+    // メールリンクの生成
+    const message = `注文は以下でよろしいですか？\n\n${orderStrings}`;
+    const mailtoLink = `mailto:b8ihua@gmail.com?subject=新しい注文&body=${encodeURIComponent(message)}`;
     window.location.href = mailtoLink; // メールアプリを開く
 }
 
