@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head><b>
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>居酒屋メニュー</title>
+<title>注文パネル</title>
 <style>
 body {
 font-family: Arial, sans-serif;
@@ -199,334 +199,392 @@ padding: 8px;
 text-align: left;
 background-color: white;
 }
+
+.history-section {
+    width: 30%;
+    background-color: #fff;
+    padding: 10px;
+    color: black;
+    position: absolute; /* これで自由にレイアウトを変更可能 */
+    right: 50%;
+    top: 50%;
+    z-index: 999;
+    height: 300px;
+    overflow-y: scroll; /* リストが長くなったときにスクロールできるように */
+}
+
+.history-list {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.history-list th, .history-list td {
+    padding: 10px;
+    border: 1px solid gray;
+}
+
+.history-list th {
+    background-color: gray;
+}
+
+.history-section {
+    display: none; /* 初期状態で非表示 */
+}
 </style>
 </head>
-<body>
+<body><b>
 <div class="container">
 <!-- 左側：ロゴと挨拶 -->
 <div class="sidebar">
-<img src="https://b8ihua.github.io/menu/IMG_0118.png" alt="居酒屋ロゴ" class="logo">
-<div style="background:darkred; color:white;padding:5px;font-size:13px;">
-食べ飲み放題コース</div>
-<div id="timer" style="background:white; color:black;padding:4px;font-size:26px;">
-</div>
-<div class="sidebar2">
-<h2>いらっしゃいませ</h2>
-ご来店いただきましてありがとうございます。<br><br>
-メニューボタンをタッチしてご注文ください。
+    <img src="https://b8ihua.github.io/menu/IMG_0118.png" alt="居酒屋ロゴ" class="logo">
+    <div style="background:darkred; color:white;padding:5px;font-size:13px;">
+    食べ飲み放題コース</div>
+    <div id="timer" style="background:white; color:black;padding:4px;font-size:26px;">
+    </div>
+    <div class="sidebar2">
+    <h2>いらっしゃいませ</h2>
+    ご来店いただきましてありがとうございます。<br><br>
+    メニューボタンをタッチしてご注文ください。
+    
+    <button id="toggle-history-button" onclick="toggleHistory()" style="background:linear-gradient(to bottom , #fff, #777);; color:black; margin:370px 1px 1px 1px; border-radius:10px;padding:10px;font-size:20px"><b>注文履歴</b></button> <!-- 新しいボタン -->
+    <div style="background:linear-gradient(to bottom , #fff, #777);; color:black; margin:10px 1px 1px 1px; border-radius:10px;padding:10px;font-size:20px">店員呼出</div>
+    </div>
+    </div>
+    <script>
+    function updateTimer() {
+    const now = new Date();
+    const nextMidnight = new Date();
+    nextMidnight.setHours(24, 0, 0, 0); // 翌日の0時に設定
+    
+    const remainingTime = Math.floor((nextMidnight - now) / 1000); // 残り時間を秒単位で計算
+    
+    const hours = String(Math.floor(remainingTime / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((remainingTime % 3600) / 60)).padStart(2, '0');
+    const seconds = String(remainingTime % 60).padStart(2, '0');
+    
+    document.getElementById('timer').innerText = `${hours}:${minutes}:${seconds}`;
+    }
+    
+    updateTimer(); // 初期表示
+    setInterval(updateTimer, 1000); // 1秒ごとに更新
 
-<div style="background:linear-gradient(to bottom , #fff, #777);; color:black; margin:370px 1px 1px 1px; border-radius:10px;padding:10px;font-size:20px">店員呼出</div>
-</div>
-</div>
-<script>
-function updateTimer() {
-const now = new Date();
-const nextMidnight = new Date();
-nextMidnight.setHours(24, 0, 0, 0); // 翌日の0時に設定
-
-const remainingTime = Math.floor((nextMidnight - now) / 1000); // 残り時間を秒単位で計算
-
-const hours = String(Math.floor(remainingTime / 3600)).padStart(2, '0');
-const minutes = String(Math.floor((remainingTime % 3600) / 60)).padStart(2, '0');
-const seconds = String(remainingTime % 60).padStart(2, '0');
-
-document.getElementById('timer').innerText = `${hours}:${minutes}:${seconds}`;
+    function toggleHistory() {
+    const historySection = document.getElementById('history-section');
+    if (historySection.style.display === 'none') {
+        historySection.style.display = 'block'; // 表示する
+    } else {
+        historySection.style.display = 'none'; // 非表示にする
+    }
 }
+    </script>
+    <!-- 中央：タブメニュー -->
+    <div class="menu-section">
+    <!-- タブメニュー -->
+    <div class="tab-menu">
+    <button class="tab-button" onclick="openTab('ku')"><b>串物</b></button>
+    <button class="tab-button" onclick="openTab('ip')"><b>逸品</b></button>
+    <button class="tab-button" onclick="openTab('os')"><b>お食事</b></button>
+    <button class="tab-button" onclick="openTab('de')"><b>デザート</b></button>
+    <button class="tab-button" onclick="openTab('dr')"><b>ドリンク</b></button>
+    <button class="tab-button" onclick="openTab('se')"><b>サービス</b></button>
+    </div>
+    <div class="menu-section2">
+    <!-- メニュー表示 -->
+    <div class="menu-content" id="ku">
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('串焼き盛合わせ', 0)">
+    <img src="https://b8ihua.github.io/menu/ku1.PNG">
+    <p>串焼き盛合わせ</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('鶏もも', 0)">
+    <img src="ku2.PNG">
+    <p>鶏もも</p>
+    </div>
+    </div>
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('鶏かわ', 0)">
+    <img src="ku3.PNG">
+    <p>鶏かわ</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('ぼんじり', 0)">
+    <img src="ku4.PNG">
+    <p>ぼんじり</p>
+    </div>
+    </div>
+    </div>
+    
+    <div class="menu-content" id="ip">
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('枝豆', 0)">
+    <img src="ip1.PNG">
+    <p>枝豆</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('たまご焼き', 0)">
+    <img src="ip2.PNG">
+    <p>たまご焼き</p>
+    </div>
+    </div>
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('スモークチーズ', 0)">
+    <img src="ip3.PNG">
+    <p>スモークチーズ</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('チャンジャ', 0)">
+    <img src="ip4.PNG">
+    <p>チャンジャ</p>
+    </div>
+    </div>
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('きゅうりキムチ', 0)">
+    <img src="ip5.PNG">
+    <p>きゅうりキムチ</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('梅水晶', 0)">
+    <img src="ip6.PNG">
+    <p>梅水晶</p>
+    </div>
+    </div>
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('きゅうりキムチ', 0)">
+    <img src="ip5.PNG">
+    <p>きゅうりキムチ</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('梅水晶', 0)">
+    <img src="ip6.PNG">
+    <p>梅水晶</p>
+    </div>
+    </div>
+    </div>
+    
+    <div class="menu-content" id="os">
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('炒飯', 0)">
+    <img src="os1.PNG">
+    <p>炒飯</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('キムチ炒飯', 0)">
+    <img src="os2.PNG">
+    <p>キムチ炒飯</p>
+    </div>
+    </div>
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('醤油ラーメン', 0)">
+    <img src="os3.PNG">
+    <p>醤油ラーメン</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('鮭茶漬け', 0)">
+    <img src="os4.PNG">
+    <p>鮭茶漬け</p>
+    </div>
+    </div>
+    
+    </div>
+    <div class="menu-content" id="de">
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('バニラアイス', 0)">
+    <img src="de1.PNG">
+    <p>バニラアイス</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('シャーベット', 0)">
+    <img src="de2.PNG">
+    <p>シャーベット</p>
+    </div>
+    </div>
+    
+    </div>
+    <div class="menu-content" id="dr">
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('ｱｻﾋｽｰﾊﾟｰﾄﾞﾗｲ', 0)">
+    <img src="dr1.PNG">
+    <p>〈生中〉ｱｻﾋｽｰﾊﾟｰﾄﾞﾗｲ</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('ｱｻﾋｽｰﾊﾟｰﾄﾞﾗｲ瓶', 0)">
+    <img src="dr2.PNG">
+    <p>〈瓶〉ｱｻﾋｽｰﾊﾟｰﾄﾞﾗｲ</p>
+    </div>
+    </div>
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('生搾りレモンサワー', 0)">
+    <img src="dr3.PNG">
+    <p>【生搾り】ﾚﾓﾝｻﾜｰ</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('こだわり酒場ﾚﾓﾝｻﾜｰ', 0)">
+    <img src="dr4.PNG">
+    <p>こだわり酒場ﾚﾓﾝｻﾜｰ</p>
+    </div>
+    </div>
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('ストゼロレモン', 0)">
+    <img src="dr31.PNG">
+    <p>ストゼロレモン</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('濃いめのグレフルサワー', 0)">
+    <img src="dr41.PNG">
+    <p>濃いめのｸﾞﾚﾌﾙｻﾜｰ</p>
+    </div>
+    </div>
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('コーラサワー', 0)">
+    <img src="dr5.PNG">
+    <p>コーラサワー</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('ラムネサワー', 0)">
+    <img src="dr6.PNG">
+    <p>ラムネサワー</p>
+    </div>
+    </div>
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('男梅サワー', 0)">
+    <img src="dr7.PNG">
+    <p>男梅サワー</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('緑茶ハイ', 0)">
+    <img src="dr8.PNG">
+    <p>緑茶ハイ</p>
+    </div>
+    </div>
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('ジャスミンハイ', 0)">
+    <img src="dr9.PNG">
+    <p>ジャスミンハイ</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('ホワイトサワー', 0)">
+    <img src="dr10.PNG">
+    <p>ホワイトサワー</p>
+    </div>
+    </div>
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('角ハイボール', 0)">
+    <img src="dr11.PNG">
+    <p>角ハイボール</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('角コークハイ', 0)">
+    <img src="dr12.PNG">
+    <p>角コークハイ</p>
+    </div>
+    </div>
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('角ジンジャーハイ', 0)">
+    <img src="dr13.PNG">
+    <p>角ジンジャーハイ</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('翠ジンソーダ', 0)">
+    <img src="dr14.PNG">
+    <p>翠ジンソーダ</p>
+    </div>
+    </div>
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('カシスオレンジ', 0)">
+    <img src="dr15.PNG">
+    <p>カシスオレンジ</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('まろやか梅酒', 0)">
+    <img src="dr16.PNG">
+    <p>まろやか梅酒</p>
+    </div>
+    </div>
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('八海山', 0)">
+    <img src="dr17.PNG">
+    <p>八海山</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('土佐鶴', 0)">
+    <img src="dr18.PNG">
+    <p>土佐鶴</p>
+    </div>
+    </div>
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('烏龍茶', 0)">
+    <img src="dr19.PNG">
+    <p>烏龍茶</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('コカコーラ', 0)">
+    <img src="dr20.PNG">
+    <p>コカコーラ</p>
+    </div>
+    </div>
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('きゅうりキムチ', 0)">
+    <img src="ip5.PNG">
+    <p>きゅうりキムチ</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('梅水晶', 0)">
+    <img src="ip6.PNG">
+    <p>梅水晶</p>
+    </div>
+    </div>
+    </div>
+    <div class="menu-content" id="se">
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('お冷', 0)">
+    <img src="de1.PNG">
+    <p>お冷</p>
+    </div>
+    <div class="menu-item" onclick="openOrderModal('お手拭き', 0)">
+    <img src="de2.PNG">
+    <p>お手拭き</p>
+    </div>
+    </div>
+    <div class="menu-group">
+    <div class="menu-item" onclick="openOrderModal('市ヶ谷クイズ', 0)">
+    <img src="de1.PNG">
+    <p>市ヶ谷クイズ</p>
+    </div>
+    
+    </div>
+    </div>
+    
+    
+    
+    </div>
+    </div>
 
-updateTimer(); // 初期表示
-setInterval(updateTimer, 1000); // 1秒ごとに更新
-</script>
-<!-- 中央：タブメニュー -->
-<div class="menu-section">
-<!-- タブメニュー -->
-<div class="tab-menu">
-<button class="tab-button" onclick="openTab('ku')"><b>串物</b></button>
-<button class="tab-button" onclick="openTab('ip')"><b>逸品</b></button>
-<button class="tab-button" onclick="openTab('os')"><b>お食事</b></button>
-<button class="tab-button" onclick="openTab('de')"><b>デザート</b></button>
-<button class="tab-button" onclick="openTab('dr')"><b>ドリンク</b></button>
-<button class="tab-button" onclick="openTab('se')"><b>サービス</b></button>
-</div>
-<div class="menu-section2">
-<!-- メニュー表示 -->
-<div class="menu-content" id="ku">
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('串焼き盛合わせ', 0)">
-<img src="https://b8ihua.github.io/menu/ku1.PNG">
-<p>串焼き盛合わせ</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('鶏もも', 0)">
-<img src="ku2.PNG">
-<p>鶏もも</p>
-</div>
-</div>
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('鶏かわ', 0)">
-<img src="ku3.PNG">
-<p>鶏かわ</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('ぼんじり', 0)">
-<img src="ku4.PNG">
-<p>ぼんじり</p>
-</div>
-</div>
-</div>
-
-<div class="menu-content" id="ip">
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('枝豆', 0)">
-<img src="ip1.PNG">
-<p>枝豆</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('たまご焼き', 0)">
-<img src="ip2.PNG">
-<p>たまご焼き</p>
-</div>
-</div>
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('スモークチーズ', 0)">
-<img src="ip3.PNG">
-<p>スモークチーズ</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('チャンジャ', 0)">
-<img src="ip4.PNG">
-<p>チャンジャ</p>
-</div>
-</div>
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('きゅうりキムチ', 0)">
-<img src="ip5.PNG">
-<p>きゅうりキムチ</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('梅水晶', 0)">
-<img src="ip6.PNG">
-<p>梅水晶</p>
-</div>
-</div>
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('きゅうりキムチ', 0)">
-<img src="ip5.PNG">
-<p>きゅうりキムチ</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('梅水晶', 0)">
-<img src="ip6.PNG">
-<p>梅水晶</p>
-</div>
-</div>
-</div>
-
-<div class="menu-content" id="os">
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('炒飯', 0)">
-<img src="os1.PNG">
-<p>炒飯</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('キムチ炒飯', 0)">
-<img src="os2.PNG">
-<p>キムチ炒飯</p>
-</div>
-</div>
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('醤油ラーメン', 0)">
-<img src="os3.PNG">
-<p>醤油ラーメン</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('鮭茶漬け', 0)">
-<img src="os4.PNG">
-<p>鮭茶漬け</p>
-</div>
-</div>
-
-</div>
-<div class="menu-content" id="de">
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('バニラアイス', 0)">
-<img src="de1.PNG">
-<p>バニラアイス</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('シャーベット', 0)">
-<img src="de2.PNG">
-<p>シャーベット</p>
-</div>
-</div>
-
-</div>
-<div class="menu-content" id="dr">
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('ｱｻﾋｽｰﾊﾟｰﾄﾞﾗｲ', 0)">
-<img src="dr1.PNG">
-<p>〈生中〉ｱｻﾋｽｰﾊﾟｰﾄﾞﾗｲ</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('ｱｻﾋｽｰﾊﾟｰﾄﾞﾗｲ瓶', 0)">
-<img src="dr2.PNG">
-<p>〈瓶〉ｱｻﾋｽｰﾊﾟｰﾄﾞﾗｲ</p>
-</div>
-</div>
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('生搾りレモンサワー', 0)">
-<img src="dr3.PNG">
-<p>【生搾り】ﾚﾓﾝｻﾜｰ</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('こだわり酒場ﾚﾓﾝｻﾜｰ', 0)">
-<img src="dr4.PNG">
-<p>こだわり酒場ﾚﾓﾝｻﾜｰ</p>
-</div>
-</div>
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('ストゼロレモン', 0)">
-<img src="dr31.PNG">
-<p>ストゼロレモン</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('濃いめのグレフルサワー', 0)">
-<img src="dr41.PNG">
-<p>濃いめのｸﾞﾚﾌﾙｻﾜｰ</p>
-</div>
-</div>
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('コーラサワー', 0)">
-<img src="dr5.PNG">
-<p>コーラサワー</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('ラムネサワー', 0)">
-<img src="dr6.PNG">
-<p>ラムネサワー</p>
-</div>
-</div>
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('男梅サワー', 0)">
-<img src="dr7.PNG">
-<p>男梅サワー</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('緑茶ハイ', 0)">
-<img src="dr8.PNG">
-<p>緑茶ハイ</p>
-</div>
-</div>
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('ジャスミンハイ', 0)">
-<img src="dr9.PNG">
-<p>ジャスミンハイ</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('ホワイトサワー', 0)">
-<img src="dr10.PNG">
-<p>ホワイトサワー</p>
-</div>
-</div>
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('角ハイボール', 0)">
-<img src="dr11.PNG">
-<p>角ハイボール</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('角コークハイ', 0)">
-<img src="dr12.PNG">
-<p>角コークハイ</p>
-</div>
-</div>
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('角ジンジャーハイ', 0)">
-<img src="dr13.PNG">
-<p>角ジンジャーハイ</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('翠ジンソーダ', 0)">
-<img src="dr14.PNG">
-<p>翠ジンソーダ</p>
-</div>
-</div>
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('カシスオレンジ', 0)">
-<img src="dr15.PNG">
-<p>カシスオレンジ</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('まろやか梅酒', 0)">
-<img src="dr16.PNG">
-<p>まろやか梅酒</p>
-</div>
-</div>
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('八海山', 0)">
-<img src="dr17.PNG">
-<p>八海山</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('土佐鶴', 0)">
-<img src="dr18.PNG">
-<p>土佐鶴</p>
-</div>
-</div>
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('烏龍茶', 0)">
-<img src="dr19.PNG">
-<p>烏龍茶</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('コカコーラ', 0)">
-<img src="dr20.PNG">
-<p>コカコーラ</p>
-</div>
-</div>
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('きゅうりキムチ', 0)">
-<img src="ip5.PNG">
-<p>きゅうりキムチ</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('梅水晶', 0)">
-<img src="ip6.PNG">
-<p>梅水晶</p>
-</div>
-</div>
-</div>
-<div class="menu-content" id="se">
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('お冷', 0)">
-<img src="de1.PNG">
-<p>お冷</p>
-</div>
-<div class="menu-item" onclick="openOrderModal('お手拭き', 0)">
-<img src="de2.PNG">
-<p>お手拭き</p>
-</div>
-</div>
-<div class="menu-group">
-<div class="menu-item" onclick="openOrderModal('市ヶ谷クイズ', 0)">
-<img src="de1.PNG">
-<p>市ヶ谷クイズ</p>
-</div>
-
-</div>
-</div>
-
-
-
-</div>
+<!-- 注文履歴セクション -->
+<div class="history-section" id="history-section">
+    <h2>注文履歴</h2>
+    <table class="history-list">
+        <thead>
+            <tr>
+                <th>商品名</th>
+                <th>数</th>
+            </tr>
+        </thead>
+        <tbody id="history-list-body">
+            <!-- 注文履歴がここに追加される -->
+        </tbody>
+    </table>
 </div>
 
 <!-- 右側：注文予定リスト -->
 <div class="order-section">
+    <table id="order-list" class="order-list">
+        <thead>
+            <tr>
+                <th>商品名</th>
+                <th>数</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 注文リストがここに追加される -->
+        </tbody>
+    </table>
+    <button id="order-button" onclick="placeOrder()"><b>注文する</b></button>
+</div>
+</div>
 
-<table id="order-list" class="order-list">
-<thead>
-<tr>
-<th>商品名</th>
-<th>数</th>
-</tr>
-</thead>
-<tbody>
-<!-- 注文リストがここに追加される -->
-</tbody>
-</table>
-<button id="order-button" onclick="placeOrder()"><b>注文する</b></button>
-</div>
-</div>
 
 <!-- 注文個数を選択するモーダルウィンドウ -->
 <div id="order-modal" class="modal">
-<div class="modal-content">
-<h3 id="modal-item-name"></h3>
-<p>何個注文しますか？</p>
-<div id="modal-buttons"></div>
-</div>
-</div>
+    <div class="modal-content">
+    <h3 id="modal-item-name"></h3>
+    <p>何個注文しますか？</p>
+    <div id="modal-buttons"></div>
+    </div>
+    </div>
 
 <script>
 let selectedItem = null;
+let orderHistory = []; // 注文履歴を保存する配列
 
 function openTab(tabName) {
 // すべてのタブのメニューを非表示にする
@@ -540,51 +598,74 @@ document.getElementById(tabName).style.display = 'flex';
 }
 
 function openOrderModal(itemName, price) {
-selectedItem = itemName;
-document.getElementById('modal-item-name').textContent = itemName;
+    selectedItem = itemName;
+    document.getElementById('modal-item-name').textContent = itemName;
 
-const modalButtons = document.getElementById('modal-buttons');
-modalButtons.innerHTML = ''; // ボタンをリセット
+    const modalButtons = document.getElementById('modal-buttons');
+    modalButtons.innerHTML = ''; // ボタンをリセット
 
-// 1〜5のボタンを生成
-for (let i = 1; i <= 5; i++) {
-const button = document.createElement('button');
-button.textContent = i;
-button.classList.add('modal-button');
-button.onclick = () => addToOrder(itemName, i);
-modalButtons.appendChild(button);
-}
+    // 1〜5のボタンを生成
+    for (let i = 1; i <= 5; i++) {
+        const button = document.createElement('button');
+        button.textContent = i;
+        button.classList.add('modal-button');
+        button.onclick = () => addToOrder(itemName, i);
+        modalButtons.appendChild(button);
+    }
 
-document.getElementById('order-modal').style.display = 'flex';
+    document.getElementById('order-modal').style.display = 'flex';
 }
 
 function addToOrder(itemName, quantity) {
-const orderList = document.getElementById('order-list').querySelector('tbody');
-const row = document.createElement('tr');
+    const orderList = document.getElementById('order-list').querySelector('tbody');
+    const row = document.createElement('tr');
 
-const itemCell = document.createElement('td');
-itemCell.textContent = itemName;
-row.appendChild(itemCell);
+    const itemCell = document.createElement('td');
+    itemCell.textContent = itemName;
+    row.appendChild(itemCell);
 
-const quantityCell = document.createElement('td');
-quantityCell.textContent = quantity;
-row.appendChild(quantityCell);
+    const quantityCell = document.createElement('td');
+    quantityCell.textContent = quantity;
+    row.appendChild(quantityCell);
 
-orderList.appendChild(row);
+    orderList.appendChild(row);
 
-// モーダルを閉じる
-document.getElementById('order-modal').style.display = 'none';
+    // 注文履歴にも追加
+    orderHistory.push({ name: itemName, quantity: quantity });
+    updateHistoryList();
+
+    // モーダルを閉じる
+    document.getElementById('order-modal').style.display = 'none';
+}
+
+function updateHistoryList() {
+    const historyList = document.getElementById('history-list-body');
+    historyList.innerHTML = ''; // 履歴をリセット
+
+    orderHistory.forEach(order => {
+        const row = document.createElement('tr');
+
+        const itemCell = document.createElement('td');
+        itemCell.textContent = order.name;
+        row.appendChild(itemCell);
+
+        const quantityCell = document.createElement('td');
+        quantityCell.textContent = order.quantity;
+        row.appendChild(quantityCell);
+
+        historyList.appendChild(row);
+    });
 }
 
 function placeOrder() {
-// 注文リストをクリア
-const orderList = document.getElementById('order-list').querySelector('tbody');
-orderList.innerHTML = '';
+    // 注文リストをクリア
+    const orderList = document.getElementById('order-list').querySelector('tbody');
+    orderList.innerHTML = '';
 }
 
 // デフォルトで最初のタブを表示
 document.addEventListener('DOMContentLoaded', () => {
-openTab('ip');
+    openTab('ip');
 });
 </script>
 </body>
