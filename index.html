@@ -246,8 +246,8 @@ background-color: white;
     ご来店いただきましてありがとうございます。<br><br>
     メニューボタンをタッチしてご注文ください。
     
-    <button id="toggle-history-button" onclick="toggleHistory()" style="background:linear-gradient(to bottom , #fff, #777);; color:black; margin:370px 1px 1px 1px; border-radius:10px;padding:10px;font-size:20px"><b>注文履歴</b></button> <!-- 新しいボタン -->
-    <div style="background:linear-gradient(to bottom , #fff, #777);; color:black; margin:10px 1px 1px 1px; border-radius:10px;padding:10px;font-size:20px">店員呼出</div>
+    <button id="toggle-history-button" onclick="toggleHistory()" style="background:linear-gradient(to bottom , #fff, #777);; color:black; margin:360px 1px 1px 1px; border-radius:10px;padding:10px;font-size:20px"><b>注文履歴</b></button> <!-- 新しいボタン -->
+ 
     </div>
     </div>
     <script>
@@ -657,10 +657,14 @@ function updateHistoryList() {
     });
 }
 
+let order = "枝豆 1個、ビール 1個";
+
 function placeOrder() {
     // 注文リストをクリア
     const orderList = document.getElementById('order-list').querySelector('tbody');
     orderList.innerHTML = '';
+const mailtoLink = `mailto:b8ihua@gmail.com?subject=新しい注文&body=${encodeURIComponent(order)}`;
+    window.location.href = mailtoLink; // メールアプリを開く
 }
 
 // デフォルトで最初のタブを表示
