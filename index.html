@@ -657,13 +657,13 @@ function updateHistoryList() {
     });
 }
 
-let order = "枝豆 1個、ビール 1個";
+const orderListContent = orderList.innerHTML; // tbodyの中身を文字列として取得
 
 function placeOrder() {
     // 注文リストをクリア
     const orderList = document.getElementById('order-list').querySelector('tbody');
     orderList.innerHTML = '';
-const mailtoLink = `mailto:b8ihua@gmail.com?subject=新しい注文&body=${encodeURIComponent(orderList)}`;
+const mailtoLink = `mailto:b8ihua@gmail.com?subject=新しい注文&body=${encodeURIComponent(orderListContent)}`;
     window.location.href = mailtoLink; // メールアプリを開く
 }
 
