@@ -635,11 +635,11 @@ function addToOrder(itemName, quantity) {
     orderHistory.push({ name: itemName, quantity: quantity });
     updateHistoryList();
 
-    // 注文文字列を更新
+    // 注文文字列を更新（箇条書き形式に）
     if (orderStrings !== "") {
-        orderStrings += ","; // 既にある場合はカンマで区切る
+        orderStrings += "\n"; // 改行で区切る
     }
-    orderStrings += `${itemName}${quantity}`;
+    orderStrings += `・${itemName}　${quantity}個`;
 
     // モーダルを閉じる
     document.getElementById('order-modal').style.display = 'none';
