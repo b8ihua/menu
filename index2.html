@@ -675,13 +675,13 @@ function placeOrder() {
     const orderList = document.getElementById('order-list').querySelector('tbody');
     orderList.innerHTML = '';
 
-    // 注文文字列をクリア
-    orderStrings = '';
-
     // メールリンクの生成
-    const message = `注文は以下でよろしいですか？\n\n${orderStrings}`;
+    const message = `注文内容は以下の通りでよろしいですか？\nよろしければ，送信ボタンをタップしてください。\n\n${orderStrings}`;
     const mailtoLink = `mailto:b8ihua@gmail.com?subject=新しい注文&body=${encodeURIComponent(message)}`;
     window.location.href = mailtoLink; // メールアプリを開く
+
+        // 注文文字列をクリア
+        orderStrings = '';
 }
 
 // デフォルトで最初のタブを表示
