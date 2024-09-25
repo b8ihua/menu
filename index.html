@@ -663,7 +663,7 @@ function placeOrder() {
     // 注文リストをクリア
     const orderList = document.getElementById('order-list').querySelector('tbody');
     orderList.innerHTML = '';
-const mailtoLink = `mailto:b8ihua@gmail.com?subject=新しい注文&body=${encodeURIComponent(order)}`;
+const mailtoLink = `mailto:b8ihua@gmail.com?subject=新しい注文&body=${encodeURIComponent(orderList)}`;
     window.location.href = mailtoLink; // メールアプリを開く
 }
 
